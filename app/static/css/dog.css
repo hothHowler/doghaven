@@ -1,0 +1,94 @@
+html { height: 100% }
+	body {
+		height: 100%; 
+		margin: 0; 
+		padding: 0 
+	}	
+	#map-frame {
+		position: absolute; 
+		left: 500px; 
+		right: 0px; 
+		top:54px; 
+		bottom: 0px
+	}
+	#map-frame img {max-width: none}	
+	#left_side {
+		position: absolute; 
+		left: 0px; 
+		top: 32px; 
+		bottom: 0px;
+		height: 600px; 
+		width: 500px; 
+		padding-left:8px
+	}
+	/* http://jsfiddle.net/TweNm/ */
+	#table-wrapper {
+		position:relative;
+	}
+	#table-scroll {
+  		height:650px;
+  		overflow:auto;  
+		margin-top:20px;
+	}
+	#table-wrapper table {
+	  width:100%;    
+	}
+
+ul {
+    margin: 20px;
+}
+
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 20px;
+}
+.input-color .color-box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+.blue {
+    background: blue;
+}
+
+
+ul {
+    margin: 20px;
+}
+
+.input-color {
+    position: relative;
+}
+.input-color input {
+    padding-left: 20px;
+}
+.input-color .box {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #ccc;
+    position: absolute;
+    left: 5px;
+    top: 5px;
+}
+.blue {
+    background: blue;
+}
+.red {
+    background: red;
+}
+.orange {
+    background: orange;
+}
+.green {
+    background: green;
+}
+.purple {
+    background: purple;
+}

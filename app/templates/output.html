@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+    <link rel="shortcut icon" href="../static/images/t9dog2_trans.ico" />
+    <title>Dog Haven</title>
+    <!-- Bootstrap core CSS -->
+    <link href="../static/css/bootstrap.min.css"rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="../static/css/dog.css">
+    <!-- Custom styles for this template -->
+    <!--<link href="starter-template.css" rel="stylesheet">-->
+
+    <!--<script src="../../assets/js/ie-emulation-modes-warning.js"></script>-->
+
+    <script src='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/v2.2.2/mapbox.css' rel='stylesheet' />
+
+    <script src='https://code.jquery.com/jquery-1.11.0.min.js'></script>
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-pip/v0.0.2/leaflet-pip.js'></script>
+
+
+    <script src='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/leaflet.markercluster.js'></script>
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.css' rel='stylesheet' />
+    <link href='https://api.mapbox.com/mapbox.js/plugins/leaflet-markercluster/v0.4.0/MarkerCluster.Default.css' rel='stylesheet' />
+
+    
+    <style>
+      body { margin:1; padding:1; }
+      /* #map{ width: 1000px; height: 500px; padding-left: 150px} */
+      #map{ width: none; height: 650px; padding-left: 150px}
+    </style>
+    
+</head>
+  </head>
+
+
+  <body>
+  <!--<body background ="static/images/city-dog.jpg">-->
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="#" style="font-weight: bold;color:white">Dog Haven: Your dog will love this place</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="http://www.doghaven.us">Home</a></li>
+      <li><a href="http://docs.google.com/presentation/d/1h9BwRWcxiSqKop-NNnN9I0oBmYKE1AmmAqvx35M6k_s/edit?usp=sharing">About</a></li> 
+            <li><a href="http://www.linkedin.com/pub/liwei-lin/9a/2b6/569">Contact</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+
+
+    var colors = new Array('blue','red','green','orange')
+<br><br> 
+  </div> <!-- /.container-->
+    <div class="container">
+      <div id="left_side">
+        <div id="table-wrapper">
+        <div id="table-scroll">
+        <table id="tblMain",class="table table-hover">
+        <tr>
+          <th>Address</th>
+          <th>Beds</th>
+          <th>Baths</th>
+          <!--<th>Sqft.</th>-->
+          <th>Price</th>          
+          <th>Score</th>
+          <th>Haven</th>
+        </tr>
+        {% for fapt in fapts %}
+	        <tr>
+	          <td>{{fapt['title']}}</td>
+	          <td>{{fapt['bedrms']}}</td>
+	          <td>{{fapt['bthrms']}}</td>
+	          <td>${{fapt['price']}}</td>
+	          <td>{{fapt['score']}}</td>
+            <td class = '{{fapt['clab']}}'></td>
+	        </tr> 
+        {% endfor %}
+        </table>
+   
+        </div> <!--table-scroll-->
+        </div> <!--table-wrapper-->
+      </div>
+      <div id='map-frame'>
+        <div id='map'></div>
+        <script type="text/javascript">
+
+        // Provide your access token
+        L.mapbox.accessToken = 'pk.eyJ1IjoibGl3ZWkyMTEiLCJhIjoiY2lleDFxOHNnMDB2czc0bWEwbTVjNHoydCJ9.UWP-pW-ijrQDii9apDdKxg';
+      	var apt_lats = {{lats}}
+        var apt_lons = {{lons}}
+        var mlon = {{mlon}}
+        var mlat = {{mlat}}
+        var map = L.mapbox.map('map','liwei211.ciex1q8hj08ehsbkqhn877odm').setView([mlat,mlon], 13);
+        var featLayer = L.mapbox.featureLayer('liwei211.cldcayvi').addTo(map);
+        var nlatlons = apt_lons.length
+        var apt_labs = {{clabs}}
+        var nclust = {{nclust}}   
+        var cpoi = {{cpoi}}
+        var clats = {{clats}}
+        var clons = {{clons}}
+        var cclst = {{cclst}}        
+        var cname = {{ cname|safe }};
+        var cyurl = {{ cyurl|safe }};        
+        var listID = {{listID}}
+        var listAdd = {{ listAdd|safe }};
+
+        var hcolors = new Array("#0000FF","#CC0000","#006600", "#FF6600",'#551A8B')        
+        var colors = new Array('blue','red','green','orange','purple')
+
+        function makeGroup(color,hcolor,ndx) {
+          var pcnt = 0
+          for (var ii=0; ii < cclst.length; ii++){
+            if (cclst[ii]==ndx) {
+              pcnt = pcnt+1
+            }
+          }
+
+          var grp = new L.MarkerClusterGroup({
+            disableClusteringAtZoom: 14 ,
+            maxClusterRadius: 500,
+            iconCreateFunction: function(cluster) {
+              var nn = cluster.getChildCount()-pcnt
+              //var nn = cluster.getChildCount()
+              return new L.DivIcon({
+                iconSize: [20, 20],
+                html: '<div style="text-align:center;color:#fff;background:' +
+                color + '">' + nn + '</div>'
+              });
+            }
+          })
+
+          // add apartment markers
+          for (var i = 0; i < apt_lats.length; i++) {            
+            if (apt_labs[i]==ndx) {
+                // fixed circle markers
+                var circle_1 = L.circle([apt_lats[i], apt_lons[i]], 32, {
+                  color: hcolor,
+                  fillColor: hcolor,
+                  fillOpacity: 0.2
+                });
+                map.addLayer(circle_1)
+                var marker = L.marker(new L.LatLng(apt_lats[i], apt_lons[i]), {
+                icon: L.mapbox.marker.icon({'marker-symbol': 'building', 'marker-color':hcolor})
+                });
+                var popupContent =  '<a target="_blank" class="popup" href=http://streeteasy.com/rental/' + 
+                           listID[i] + '>' +'<img width=100 src=../static/images/streeteasy-logo.png>'+
+                           listAdd[i] +'</a>';
+                marker.bindPopup(popupContent,{
+                    closeButton: false
+                });
+                
+              //});
+              grp.addLayer(marker);
+            }
+          }       
+          
+          var smbs = new Array('shop','lodging','restaurant','hospital')
+            for (var i = 0; i < clats.length; i++) {            
+              if (cclst[i]==ndx) {
+                  // fixed circle markers
+                  var poim = L.marker(new L.LatLng(clats[i], clons[i]), {
+                  icon: L.mapbox.marker.icon(
+                    {'marker-symbol': smbs[cpoi[i]-1], 
+                     'marker-color':hcolor, 
+                     'marker-size':'small'})
+                  });    
+                  var popupContent =  '<a target="_blank" class="popup" href=http://www.yelp.com' + 
+                            cyurl[i] + '>' +'<img src=../static/images/yelp_logo_40x20.png>'+
+                              cname[i] +'</a>';
+                  poim.bindPopup(popupContent,{
+                    closeButton: false
+                  });
+                  grp.addLayer(poim) 
+              }
+          }          
+
+          map.addLayer(grp)
+          return grp
+        }
+
+        for (var i = 0; i < nclust; i++) {
+            var jnk = makeGroup(colors[i],hcolors[i],i);
+        }
+
+        </script>
+      </div> <!--map--> 
+    </div>
+
+        <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
+        <script src="static/js/bootstrap.min.js"></script>
+
+    </div>
+
+<br><br> 
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!--<script src="../../dist/js/bootstrap.min.js"></script>-->
+    <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  </body>
+</html>
